@@ -191,7 +191,8 @@ class ugot_broadcast_channel:
 
 
 if __name__ == '__main__':
-    from ugot_broadcast_message import ugot_broadcast_channel
+    #from ugot_broadcast_message import ugot_broadcast_channel
+    
     channel = ugot_broadcast_channel()
 
     # Optional set communication channel, default is 0
