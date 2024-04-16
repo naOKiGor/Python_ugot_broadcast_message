@@ -60,7 +60,7 @@ class ugot_broadcast_channel:
             while self.enable:
                 try:
                     valid, message_content = self.__receive_message_impl__()
-                    if self.callback is not None:
+                    if valid and self.callback is not None:
                         self.callback(message_content)
                 except:
                     pass
