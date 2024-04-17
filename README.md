@@ -5,7 +5,7 @@ uGot_Broadcast_message Python library
 pip install uGot-Broadcast-message
 ```
 
-# Examples:
+# Examples
 ```
 from ugot_broadcast_message import ugot_broadcast_channel
 channel = ugot_broadcast_channel()
