@@ -3,6 +3,8 @@ from io import BytesIO
 from typing import Optional
 import time
 import threading
+import psutil
+import re
 
 from ugot_broadcast_message_pb2 import broadcast_message_header, broadcast_message_payload
 
@@ -134,6 +136,9 @@ class ugot_broadcast_channel:
     def send_message_to(self, message_value: str, address: Optional[str]):
         self.__send_broadcast_message_impl__(message_value, address)
 
+    def __is_valid_ip_addr__(self, addr: str):
+        return re.match(r'(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])(\.(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])){3}', addr) is not None
+
     def __send_broadcast_message_impl__(self, message_value: str, address: Optional[str] = None):
         """Send communication message
         :param message_value: message content
@@ -164,8 +169,7 @@ class ugot_broadcast_channel:
         message_bytes = message.getvalue()
 
         if self.bind_host is None:
-            interfaces = socket.getaddrinfo(host=socket.gethostname(), port=None, family=socket.AF_INET)
-            broadcast_interfaces = set([ip[-1][0] for ip in interfaces])
+            broadcast_interfaces = set([item.address for value in psutil.net_if_addrs().values() for item in value if self.__is_valid_ip_addr__(item.address)])
         else:
             broadcast_interfaces = [self.bind_host]
 
@@ -191,12 +195,12 @@ class ugot_broadcast_channel:
 
 
 if __name__ == '__main__':
-    #from ugot_broadcast_message import ugot_broadcast_channel
-    
+    from ugot_broadcast_message import ugot_broadcast_channel
+
     channel = ugot_broadcast_channel()
 
     # Optional set communication channel, default is 0
-    # channel.set_channel(0)
+    channel.set_channel(0)
 
     # Enable broadcast function, default is off
     channel.set_enable(True)

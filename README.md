@@ -8,6 +8,7 @@ pip install uGot-Broadcast-message
 # Examples
 ```
 from ugot_broadcast_message import ugot_broadcast_channel
+
 channel = ugot_broadcast_channel()
 
 # Optional set communication channel, default is 0
